@@ -3,7 +3,7 @@ require("dotenv").config({ path: "../.env" });
 const { connectToDb } = require("../connection");
 const feedbackRouter = require("./feedback"); // Feedback Router
 const suggestionRouter = require("./suggestion");
-const signupRouter = require("./auth")
+const authRouter = require("./auth");
 const app = express();
 const Router = express.Router(); // Main router
 const mongodbUrl = process.env.MONGODB_URL;
@@ -17,23 +17,11 @@ connectToDb(mongodbUrl)
   .catch((err) => console.error("DB connection failed:", err));
 
 // Attach feedback routes to the router
-Router.use("/feedback", feedbackRouter); 
-Router.use("/suggestion", suggestionRouter); 
-Router.use("/signup",signupRouter)
+Router.use("/feedback", feedbackRouter);
+Router.use("/suggestion", suggestionRouter);
+Router.use("/admin", authRouter);
 // Use the router in the app
 app.use(Router);
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Start the server
 const PORT = process.env.PORT; // Default to 3000 if PORT is not set
