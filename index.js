@@ -10,8 +10,13 @@ const Router = express.Router(); // Main router
 const mongodbUrl = process.env.MONGODB_URL;
 const mongoose = require('mongoose')
 // Middleware
+const allowedOrigins = [
+  'http://localhost:5173', // Local development
+  'https://campus-connect-fe.vercel.app' // Deployed frontend
+];
 app.use(cors({
-  origin: 'https://campus-connect-fe.vercel.app' // Allow requests from your frontend
+  origin: '*', // Allow all origins (not recommended for production)
+  credentials: true
 }));
 app.use(express.json()); // Parse JSON body
 
