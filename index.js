@@ -15,8 +15,15 @@ const allowedOrigins = [
   'https://campus-connect-fe.vercel.app' // Deployed frontend
 ];
 app.use(cors({
-  origin: '*', // Allow all origins (not recommended for production)
-  credentials: true
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, origin);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true // Allow credentials
 }));
 app.use(express.json()); // Parse JSON body
 
