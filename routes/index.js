@@ -24,7 +24,9 @@ Router.use("/admin", authRouter);
 app.use(Router);
 
 // Start the server
-const PORT = process.env.PORT; // Default to 3000 if PORT is not set
+const PORT = process.env.PORT || 3000; // Default to 3000 if PORT is not set
 app.listen(PORT, () => {
   console.log(`Server started at port ${PORT}`); // Log the actual port being used
+}).on('error', (err) => {
+  console.error("Server failed to start:", err); // Log any startup errors
 });

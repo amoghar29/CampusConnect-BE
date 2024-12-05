@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const Admin = require("../../models/admin");
 const saltRounds = 5;
-async function handleUserSignup(req, res) {
+async function handleAdminSignup(req, res) {
   const { email, password, clubName } = req.body;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
@@ -21,4 +21,4 @@ async function handleUserSignup(req, res) {
   }
 }
 
-module.exports = handleUserSignup;
+module.exports = handleAdminSignup;
