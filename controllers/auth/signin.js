@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "../../.env" });
+require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const Admin = require("../../models/admin");
@@ -6,7 +6,7 @@ const Admin = require("../../models/admin");
 const secretKey = process.env.SECRET_KEY;
 
 async function isAdminSignedin(req, res) {
-  const { email, inputPassword } = req.body;
+  const { email, password } = req.body;
 
   try {
     // Find admin by email
@@ -17,7 +17,7 @@ async function isAdminSignedin(req, res) {
 
     // Compare passwords
     const storedPassword = adminDetails.password;
-    const match = await bcrypt.compare(inputPassword, storedPassword);
+    const match = await bcrypt.compare(password, storedPassword);
 
     if (match) {
       // Generate JWT token
