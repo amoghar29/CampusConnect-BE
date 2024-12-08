@@ -32,11 +32,11 @@ app.use(express.json()); // Parse JSON body
 //   .then(() => console.log("Connected to DB"))
 //   .catch((err) => console.error("DB connection failed:", err));
 
-mongoose.connect("mongodb+srv://amogharlearns:qc1VkNPDcOGJuQwo@club-user-data.w643p.mongodb.net/")
+mongoose.connect(mongodbUrl)
 // Attach feedback routes to the router
 Router.use("/feedback", feedbackRouter);
 Router.use("/suggestion", suggestionRouter);
-Router.use("/admin", authRouter);
+Router.use("/", authRouter);
 // Use the router in the app
 app.use(Router);
 
