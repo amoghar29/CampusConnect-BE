@@ -13,7 +13,7 @@ async function handleAdminSignup(req, res) {
     });
     return res
       .status(200)
-      .json({ success: "signup successfull", adminDetails });
+      .json({ success: "signup successfull", });
   } catch (err) {
     console.error("Error during signup:", err);
 
