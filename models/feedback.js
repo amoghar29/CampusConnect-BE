@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
-const {Schema} = mongoose;
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const feedbackSchema = new Schema({
-  userExperience: { type: String, required: true },
-  userIssue: { type: String, required: true },
-  issueDescription: { type: String, required: true },
+  rating: { type: String, required: true },
+  selectedCategory: { type: String, required: true },
+  feedback: { type: String, required: true },
 });
 
-module.exports = mongoose.model('Feedback', feedbackSchema);
+module.exports = mongoose.model("Feedback", feedbackSchema);
