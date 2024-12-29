@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { type } = require('os');
 const Schema = mongoose.Schema;
 
 const EventSchema = new Schema({
@@ -11,6 +12,7 @@ const EventSchema = new Schema({
   location: { type: String, required: true },
   description: { type: String },
   eligibility: { type: String },
+  banner:{type:String} , // store image link form s3
   registrationFee: { type: Number },
   teamSize: { type: String },  
   createdAt: { type: Date, default: Date.now },
