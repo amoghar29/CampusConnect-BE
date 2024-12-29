@@ -1,11 +1,11 @@
 const Feedback = require("../../models/feedback");
 async function submitUserFeedback(req, res) {
   try {
-    const { userExperience, userIssue, issueDescription } = req.body;
+    const { rating, selectedCategory, feedback } = req.body;
     const feedbackDetails = await Feedback.create({
-      userExperience,
-      userIssue,
-      issueDescription,
+      rating,
+      selectedCategory,
+      feedback,
     });
     return res.status(201).json(feedbackDetails);
   } catch (error) {
