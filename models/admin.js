@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
+const club = require("./club");
 const __id = mongoose.__id;
 const { Schema } = mongoose;
 const AdminSchema = new Schema({
   email: { type: String, required: true, unique: true },
+  club: { type: Schema.Types.ObjectId, ref: "Club", required: true },
   password: { type: String, required: true },
   clubName: { type: String },
   logo: {
