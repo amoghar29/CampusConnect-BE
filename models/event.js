@@ -3,17 +3,16 @@ const { type } = require('os');
 const Schema = mongoose.Schema;
 
 const EventSchema = new Schema({
-  name: { type: String, required: true },
-  club: { type: Schema.Types.ObjectId, ref: 'Club', required: true },
-  createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  startDate: { type: Date, required: true },
-  startTime: { type: String, required: true }, // Store as "HH:MM" format
-  endTime: { type: String, required: true }, // Store as "HH:MM" format
+  title: { type: String, required: true },
+  // club: { type: Schema.Types.ObjectId, ref: 'Club', required: true },
+  // createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  startDate: { type: Date, }, // add req true
+  startTime: { type: String,}, //add req true ,Store as "HH:MM" format
   location: { type: String, required: true },
   description: { type: String },
   eligibility: { type: String },
   banner:{type:String} , // store image link form s3
-  registrationFee: { type: Number },
+  registrationFee: { type: String },
   teamSize: { type: String },  
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },

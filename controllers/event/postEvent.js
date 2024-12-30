@@ -19,7 +19,6 @@ async function postEvent(req, res) {
     }
     const newEvent = await Event.create({
       ...eventDetails,
-      createdBy: "fd", // From auth middleware
       banner: result // Will be updated after S3 upload
     });
 
