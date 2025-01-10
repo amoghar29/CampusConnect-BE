@@ -7,12 +7,11 @@ const eventRouter = require("./event");
 const clubRouter = require("./club");
 const winnerRouter = require("./winner");
 const adminRouter = require("./admin");
-const {adminAuth,checkAdminOwnership} = require("../middleware/adminAuth")
+const { adminAuth } = require("../middleware/adminAuth");
 
 const router = express.Router();
 
-// router.use("/admin", adminAuth,checkAdminOwnership,adminRouter);
-router.use("/admin",adminRouter)
+router.use("/admin",adminAuth,adminRouter);
 router.use("/feedback", feedbackRouter);
 router.use("/suggestion", suggestionRouter);
 router.use("/auth", authRouter);

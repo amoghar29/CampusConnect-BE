@@ -3,9 +3,6 @@ const Feedback = require("../../models/feedback");
 async function getFeedbackByClub(req, res) {
   const { clubId } = req.params;
   try {
-    if (!clubId) {
-      return res.status(400).json({ message: "Club name is required" });
-    }
     const feedbacks = await Feedback.find({ __id: clubId });
 
     if (feedbacks.length === 0) {

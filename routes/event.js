@@ -7,7 +7,7 @@ const router = require("express").Router();
 
 router.get("/", getAllEvents);
 router.get("/:eventId", getEventById);
-router.get("/club/:clubId", getEventsByClubId); 
+router.get("/:clubId", getEventsByClubId); 
 router.put("/:eventId", updateEventById); //admin only
 router.delete("/:eventId", deleteEventById);//admin only
 

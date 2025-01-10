@@ -4,7 +4,6 @@ async function postEvent(req, res) {
   const eventDetails = req.body;
   
   try {
-    // Validate required fields
     if (!eventDetails.title || !eventDetails.clubName || !eventDetails.location) {
       return res.status(400).json({
         message: "Missing required fields",
@@ -12,6 +11,7 @@ async function postEvent(req, res) {
       });
     }
     const result = await uploadToS3(req.file, eventDetails.clubName);
+   
     if (!result) {
       return res.status(500).json({
         message: "Error uploading image to S3",

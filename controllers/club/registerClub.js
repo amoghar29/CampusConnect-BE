@@ -19,7 +19,7 @@ async function registerClub(req, res) {
     console.log(req.body);
 
     // Validate required fields
-    if (!clubName || !email || !aboutUs) {
+    if (!clubName || !email || !aboutUs || req.file) {
       return res.status(400).json({
         error: "Required fields missing",
         required: ["clubName", "email", "logo (file)", "aboutUs"],
