@@ -19,10 +19,10 @@ async function registerClub(req, res) {
     console.log(req.body);
 
     // Validate required fields
-    if (!clubName || !email || !aboutUs || req.file) {
+    if (!clubName || !aboutUs) {
       return res.status(400).json({
         error: "Required fields missing",
-        required: ["clubName", "email", "logo (file)", "aboutUs"],
+        required: ["clubName", "logo (file)", "aboutUs"],
       });
     }
 
@@ -50,22 +50,27 @@ async function registerClub(req, res) {
       foundedYear,
       president,
       vicePresident,
-      email,
+      email: req.adminEmail,
       phoneNumber,
-      socialMedia: {
-        instagram: socialMedia?.instagram || "",
-        twitter: socialMedia?.twitter || "",
-        linkedin: socialMedia?.linkedin || "",
-      },
+      socialMedia:
+        typeof socialMedia === "string"
+          ? JSON.parse(socialMedia)
+          : {
+              instagram: socialMedia?.instagram || "",
+              twitter: socialMedia?.twitter || "",
+              linkedin: socialMedia?.linkedin || "",
+            },
       membershipFee,
       achievements: achievements || [],
       totalMembers: 0,
+      createdBy: req.adminId,
     });
 
     // Update admin's clubName
-    await Admin.findByIdAndUpdate(req.admin._id, {
+    await Admin.findByIdAndUpdate(req.adminId, {
       clubName,
       updatedAt: new Date(),
+      clubId : newClub._id
     });
 
     return res.status(201).json({

@@ -3,7 +3,9 @@ const Event = require("../../models/event");
 async function getEventById(req, res) {
   try {
     const { eventId } = req.params;
+    
     const event = await Event.findById(eventId);
+    
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
     }

@@ -1,6 +1,4 @@
-const { REPL_MODE_STRICT } = require("repl");
 const Event = require("../../models/event");
-const { response } = require("express");
 
 async function deleteEventById(req, res) {
   const {eventId} = req.params;

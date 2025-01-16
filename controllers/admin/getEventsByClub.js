@@ -1,12 +1,11 @@
-const { response } = require("express");
 const Event = require("../../models/event");
 
 async function getEventsByClubId(req, res) {
-  const { clubId } = req.params;
+  const  clubId  = req.clubId;
 
   try {
     // Fetch events where 'clubId' matches
-    const events = await Event.find({ clubName: clubId });
+    const events = await Event.find({ hostingClub: clubId });
 
     if (events.length === 0) {
       return res
@@ -14,7 +13,7 @@ async function getEventsByClubId(req, res) {
         .json({ message: "No events found for the given club ID" });
     }
 
-    res.status(200).json({ message: "Events fetched successfully", events });
+    res.status(200).json(events);
   } catch (e) {
     res
       .status(500)

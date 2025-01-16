@@ -1,22 +1,38 @@
-const { response } = require("express");
+const { uploadToS3 } = require("../../aws/images");
 const Event = require("../../models/event");
+async function updateEvent(req, res) {
+    const { eventId } = req.params;
+    const {updateData} = req.body
+    try {
 
-async function updateEventById(req, res) {
-  const { eventId } = req.params;
-  const updateDetails = req.body;
 
-  try {
-    const updatedEvent = await Event.findByIdAndUpdate(eventId, updateDetails, {
-      new: true,
-      runValidators: true,
-    });
-    if (!updatedEvent) {
-      return res.status(404).json({ message: "Event not found" });
+        if (req.file) {
+            const eventImageUrl = uploadToS3(req.file,req.clubName)
+            updateData.eventImage = eventImageUrl;
+        }
+        // Perform the update
+        const updatedEvent = await Event.findByIdAndUpdate(eventId, updateData, {
+            new: true,
+            runValidators: true,
+        });
+
+        if (!updatedEvent) {
+            return res.status(404).json({
+                message: "Event not found",
+            });
+        }
+
+        res.status(200).json({
+            message: "Event updated successfully",
+            event: updatedEvent,
+        });
+    } catch (error) {
+        console.error("Error updating event:", error);
+        res.status(500).json({
+            message: "Error updating event",
+            error: error.message,
+        });
     }
-    res.status(200).json({ message: "Success", event: updatedEvent });
-  } catch (e) {
-    res.status(400).json({ err: e.message });
-  }
 }
 
-module.exports = updateEventById;
+module.exports = updateEvent;

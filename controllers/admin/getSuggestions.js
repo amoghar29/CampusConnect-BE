@@ -1,18 +1,14 @@
 const Suggestion = require("../../models/suggestion");
 
 async function getSuggestionByClub(req, res) {
-  const { clubId } = req.params;
+  console.log(req.body);
+  
+  const  clubId  = req.clubId;
   try {
     if (!clubId) {
       return res.status(400).json({ message: "Club name is required" });
     }
-    const suggestion = await Suggestion.find({ __id: clubId });
-
-    if (suggestion.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No suggestions found for this club" });
-    }
+    const suggestion = await Suggestion.find({ clubId: clubId });
 
     res.status(200).json(suggestion);
   } catch (error) {

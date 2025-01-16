@@ -17,6 +17,7 @@ const getAdmin = async (email) => {
 const adminAuth = async (req, res, next) => {
   try {
     const access_token = req.cookies.access_token;
+    
     if (!access_token) {
       return res.status(401).json({
         msg: "Please login first",
@@ -26,17 +27,16 @@ const adminAuth = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(access_token, process.env.SECRET_KEY);
-    console.log("Decoded token:", decoded);
 
     const admin = await getAdmin(decoded.email);
     if (!admin) {
-      return res.status(401).json({
-        msg: "Admin not found",
-        decodedEmail: decoded.email,
-      });
+      return res.status(401).json({ msg: "Admin not found" });
     }
 
-    req.admin = admin;
+    req.adminId = admin._id;
+    req.clubId = admin.clubId;
+    req.adminEmail = admin.email;
+    req.clubName = admin.clubName;
     next();
   } catch (error) {
     console.error("Auth error:", error);
@@ -63,4 +63,4 @@ const adminAuth = async (req, res, next) => {
 //   }
 // };
 
-module.exports = { adminAuth };
+module.exports = adminAuth;

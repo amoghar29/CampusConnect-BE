@@ -6,14 +6,12 @@ async function handleAdminSignup(req, res) {
   try {
     const { email, password } = req.body;
 
-    // Validate input
     if (!email || !password) {
       return res.status(400).json({ 
         error: "Email and password are required" 
       });
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ 
@@ -21,7 +19,6 @@ async function handleAdminSignup(req, res) {
       });
     }
 
-    // Check if email already exists
     const existingAdmin = await Admin.findOne({ email });
     if (existingAdmin) {
       return res.status(400).json({ 
@@ -29,10 +26,8 @@ async function handleAdminSignup(req, res) {
       });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Create admin
     await Admin.create({
       email,
       password: hashedPassword

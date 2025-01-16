@@ -25,7 +25,7 @@ async function uploadToS3(file, clubName) {
     })
     .toBuffer();
 
-  console.log("Resized image buffer length:", resizedImageBuffer.length);
+  // console.log("Resized image buffer length:", resizedImageBuffer.length);
 
   const uploadParams = {
     Bucket: process.env.AWS_BUCKET_NAME, // S3 Bucket name
@@ -41,7 +41,7 @@ async function uploadToS3(file, clubName) {
     // Return the full S3 Key or URL for further use
     return `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${uploadParams.Key}`;
   } catch (error) {
-    console.error("Error uploading to S3:", error);
+    // console.error("Error uploading to S3:", error);
     throw new Error("Failed to upload image to S3");
   }
 }

@@ -2,7 +2,6 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const Admin = require("../../models/admin");
-const club = require("../../models/club");
 
 const secretKey = process.env.SECRET_KEY;
 
@@ -30,23 +29,17 @@ async function handleAdminSignin(req, res) {
           expiresIn: "24h",
         }
       );
-      // Set cookie with proper settings
-      console.log("Setting cookie with token:", access_token);
+
       res.cookie("access_token", access_token, {
         secure: false,
         sameSite: "Lax",
         httpOnly: true,
-        expires: new Date(Date.now() + 900000),
+        expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
         path: "/",
       });
-     
-      // if (!adminDetails.clubName) {
-      //   return res.status(307).json({
-      //     message: "Please register your club",
-      //     redirect: "/admin/register-club",
-      //   });
+      // if (!adminDetails.clubId) {
+      //   return res.status(202).json({ message: "Please register your club" });
       // }
-
       return res.status(200).json({
         message: "Signin successful",
         debug: {
