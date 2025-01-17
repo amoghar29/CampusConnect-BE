@@ -37,9 +37,6 @@ async function handleAdminSignin(req, res) {
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
         path: "/",
       });
-      // if (!adminDetails.clubId) {
-      //   return res.status(202).json({ message: "Please register your club" });
-      // }
       return res.status(200).json({
         message: "Signin successful",
         debug: {

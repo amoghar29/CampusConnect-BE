@@ -18,7 +18,6 @@ async function registerClub(req, res) {
     } = req.body;
     console.log(req.body);
 
-    // Validate required fields
     if (!clubName || !aboutUs) {
       return res.status(400).json({
         error: "Required fields missing",
@@ -26,7 +25,6 @@ async function registerClub(req, res) {
       });
     }
 
-    // Check if club name already exists
     const existingClub = await Club.findOne({ clubName });
     if (existingClub) {
       return res.status(400).json({
@@ -34,7 +32,6 @@ async function registerClub(req, res) {
       });
     }
 
-    // Upload logo
     const logoUrl = await uploadToS3(req.file, clubName);
     if (!logoUrl) {
       return res.status(500).json({
@@ -42,7 +39,6 @@ async function registerClub(req, res) {
       });
     }
 
-    // Create new club
     const newClub = await Club.create({
       clubName,
       aboutUs,

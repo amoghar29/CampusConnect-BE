@@ -7,15 +7,17 @@ const routes = require("./routes/index");
 
 const mongodbUrl = process.env.MONGODB_URL;
 const PORT = process.env.PORT || 4000;
-
+const FRONTEND_URL = process.env.FRONTEND_URL
 const app = express();
 
-// Connection to db
 connectToDb(mongodbUrl).then(() => console.log("Connected to DB"));
 
 // Middleware
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin:
+    process.env.NODE_ENV === "production"
+      ? "https://your-production-url.com"
+      : "http://localhost:5173",
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],

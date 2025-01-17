@@ -4,7 +4,6 @@ async function getEventsByClubId(req, res) {
   const  clubId  = req.clubId;
 
   try {
-    // Fetch events where 'clubId' matches
     const events = await Event.find({ hostingClub: clubId });
 
     if (events.length === 0) {

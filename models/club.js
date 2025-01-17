@@ -6,7 +6,7 @@ const ClubSchema = new Schema({
   createdBy: { type: Schema.Types.ObjectId, ref: "Admin", required: true },
   aboutUs: {},
   logo: {
-    type: String, // URL or path to the club's logo image
+    type: String, 
     default: "",
   },
   foundedYear: { type: Number },

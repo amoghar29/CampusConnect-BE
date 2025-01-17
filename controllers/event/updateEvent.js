@@ -10,7 +10,6 @@ async function updateEvent(req, res) {
             const eventImageUrl = uploadToS3(req.file,req.clubName)
             updateData.eventImage = eventImageUrl;
         }
-        // Perform the update
         const updatedEvent = await Event.findByIdAndUpdate(eventId, updateData, {
             new: true,
             runValidators: true,
