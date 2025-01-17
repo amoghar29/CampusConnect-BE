@@ -1,20 +1,19 @@
 const mongoose = require("mongoose");
-const { type } = require("os");
-
 const { Schema } = mongoose;
 
-const suggestionSchema = new Schema({
+const suggestionSchema = new mongoose.Schema({
   userFullname: { type: String, required: true },
   userEmail: { type: String, required: true },
-  userPhoneNumber: { type: Number, requierd: true },
-  clubName: { type: String, requierd: true },
-  suggestedEventTitle: { type: String, requierd: true },
+  userPhoneNumber: { type: String },
+   clubId: { type: Schema.Types.ObjectId, ref: "Club", default: null },
+  suggestedEventTitle: { type: String },
   suggestedEventDescription: { type: String, required: true },
   expectedHeadCount: { type: Number },
-  eventDuration: { type: Number, requierd: true },
+  expectedDuration: { type: Number },
   additionalNotes: { type: String },
   branch: { type: String },
-  semester: { type: Number },
+  semester: { type: String },
 });
 
-module.exports = mongoose.model("Suggestion", suggestionSchema);
+const Suggestion = mongoose.model("Suggestion", suggestionSchema);
+module.exports = Suggestion;

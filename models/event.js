@@ -1,22 +1,27 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const { type } = require("os");
 const Schema = mongoose.Schema;
 
 const EventSchema = new Schema({
-  name: { type: String, required: true },
-  club: { type: Schema.Types.ObjectId, ref: 'Club', required: true },
-  createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  startDate: { type: Date, required: true },
-  startTime: { type: String, required: true }, // Store as "HH:MM" format
-  endTime: { type: String, required: true }, // Store as "HH:MM" format
+  title: { type: String, required: true },
+  hostingClub: { type: Schema.Types.ObjectId, ref: "Club", required: true },
+  hostingClubName: { type: String, required: true },
+  createdBy: { type: Schema.Types.ObjectId, ref: "Admin", required: true },
+  startDate: { type: Date }, 
+  startTime: { type: String }, 
   location: { type: String, required: true },
   description: { type: String },
   eligibility: { type: String },
-  registrationFee: { type: Number },
-  teamSize: { type: String },  
+  banner: { type: String }, 
+  eventImage: { type: String }, 
+  registrationFee: { type: String },
+  teamSize: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
-  firstPlace:{type:String, default: null},
-  secontPlace:{type:String, default: null},
+  firstPlace: { type: String, default: undefined },
+  secondPlace: { type: String, default: undefined },
+  thirdPlace: { type: String, default: undefined },
+  formLink: { type: String, default: "" },
 });
 
-module.exports = mongoose.model('Event', EventSchema);
+module.exports = mongoose.model("Event", EventSchema);

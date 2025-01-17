@@ -1,49 +1,49 @@
+const dotenv = require("dotenv");
 const express = require("express");
-require("dotenv").config({ path: "../.env" });
-// const connectToDb  = require("./connection");
-const feedbackRouter = require("./routes/feedback"); // Feedback Router
-const suggestionRouter = require("./routes/suggestion");
-const authRouter = require("./routes/auth");
-const cors = require('cors');
-const app = express();
-const Router = express.Router(); // Main router
+const { connectToDb } = require("./connection");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const routes = require("./routes/index");
+
 const mongodbUrl = process.env.MONGODB_URL;
-const mongoose = require('mongoose')
+const PORT = process.env.PORT || 4000;
+const FRONTEND_URL = process.env.FRONTEND_URL
+const app = express();
+
+connectToDb(mongodbUrl).then(() => console.log("Connected to DB"));
+
 // Middleware
-const allowedOrigins = [
-  'http://localhost:5173', // Local development
-  'https://campus-connect-fe.vercel.app' // Deployed frontend
-];
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, origin);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true // Allow credentials
-}));
-app.use(express.json()); // Parse JSON body
+const corsOptions = {
+  origin:
+    process.env.NODE_ENV === "production"
+      ? "https://your-production-url.com"
+      : "http://localhost:5173",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  exposedHeaders: ["set-cookie"],
+};
 
-// Connect to the database
-// connectToDb(mongodbUrl)
-//   .then(() => console.log("Connected to DB"))
-//   .catch((err) => console.error("DB connection failed:", err));
+app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors(corsOptions));
 
-mongoose.connect(mongodbUrl)
-// Attach feedback routes to the router
-Router.use("/feedback", feedbackRouter);
-Router.use("/suggestion", suggestionRouter);
-Router.use("/", authRouter);
-// Use the router in the app
-app.use(Router);
+// CORS headers middleware
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
-// Start the server
-const PORT = process.env.PORT || 4000; // Default to 4000 if PORT is not set
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
+app.use("/api/", routes);
+
 app.listen(PORT, () => {
-  // console.log(`Server started at port ${PORT}`); // Log the actual port being used
-}).on('error', (err) => {
-  // console.error("Server failed to start:", err); // Log any startup errors
+  console.log(`Server is running on port ${PORT}`);
 });
