@@ -15,7 +15,7 @@ const ClubSchema = new Schema({
   email: { type: String, required: true },
   phoneNumber: { type: String },
   socialMedia: {
-    facebook: { type: String },
+    linkedIn: { type: String },
     twitter: { type: String },
     instagram: { type: String },
   },

@@ -9,7 +9,7 @@ async function submitUserFeedback(req, res) {
     const feedbackDetails = await Feedback.create({
       rating,
       selectedCategory,
-      feedback,
+      experienceDescription:feedback,
       eventTitle,
       hostingClub,
     });

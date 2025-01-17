@@ -1,15 +1,9 @@
 const Feedback = require("../../models/feedback");
 
 async function getFeedbackByClub(req, res) {
-  const { clubId } = req.params;
+  const clubId = req.clubId
   try {
-    const feedbacks = await Feedback.find({ __id: clubId });
-
-    if (feedbacks.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No feedback found for this club" });
-    }
+    const feedbacks = await Feedback.find({ hostingClub: clubId });
 
     res.status(200).json(feedbacks);
   } catch (error) {

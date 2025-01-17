@@ -7,7 +7,6 @@ const feedbackSchema = new Schema({
   experienceDescription: { type: String, required: true },
   eventTitle: { type: String },
   hostingClub: { type: Schema.Types.ObjectId, ref: "Club", required: true },
-  hostingClubName: {type:String,required: true},
 });
 
 module.exports = mongoose.model("Feedback", feedbackSchema);

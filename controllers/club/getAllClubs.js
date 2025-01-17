@@ -6,4 +6,9 @@ async function getAllClubs(req, res) {
   return res.status(200).json(clubs);
 }
 
-module.exports = getAllClubs;
+async function getAllClubNames(req, res) {
+  const clubs = await Club.find().select("clubName");
+  return res.status(200).json(clubs);
+}
+
+module.exports = {getAllClubs,getAllClubNames};

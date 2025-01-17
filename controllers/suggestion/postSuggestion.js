@@ -5,7 +5,8 @@ async function submitUserSuggestion(req, res) {
     userFullname,
     userEmail,
     userPhoneNumber,
-    clubName,
+    
+    clubId,
     suggestedEventTitle,
     suggestedEventDescription,
     expectedHeadCount,
@@ -19,7 +20,7 @@ async function submitUserSuggestion(req, res) {
     userFullname,
     userEmail,
     userPhoneNumber,
-    clubName,
+    
     suggestedEventTitle,
     suggestedEventDescription,
     expectedHeadCount,
@@ -27,6 +28,7 @@ async function submitUserSuggestion(req, res) {
     additionalNotes,
     branch,
     semester,
+    clubId
   };
 
   try {
