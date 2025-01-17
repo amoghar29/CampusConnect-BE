@@ -30,8 +30,10 @@ async function handleAdminSignin(req, res) {
         }
       );
 
+      const isProduction = process.env.NODE_ENV === "production";
+
       res.cookie("access_token", access_token, {
-        secure: false,
+        secure: isProduction,
         sameSite: "Lax",
         httpOnly: true,
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
