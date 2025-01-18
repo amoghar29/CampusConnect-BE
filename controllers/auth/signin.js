@@ -1,3 +1,10 @@
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const Admin = require("../../models/admin");
+
+const secretKey = process.env.SECRET_KEY;
+
 async function handleAdminSignin(req, res) {
   const { email, password } = req.body;
 
