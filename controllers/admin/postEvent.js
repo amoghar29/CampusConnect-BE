@@ -10,7 +10,7 @@ async function postEvent(req, res) {
         required: ["title", , "date", "location"],
       });
     }
-    const result = await uploadToS3(req.file, eventDetails.clubName);
+    const result = await uploadToS3(req.file, req.clubName);
 
     if (!result) {
       return res.status(500).json({
