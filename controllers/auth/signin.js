@@ -1,10 +1,3 @@
-require("dotenv").config();
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const Admin = require("../../models/admin");
-
-const secretKey = process.env.SECRET_KEY;
-
 async function handleAdminSignin(req, res) {
   const { email, password } = req.body;
 
@@ -30,17 +23,28 @@ async function handleAdminSignin(req, res) {
         }
       );
 
-      res.cookie("access_token", access_token, {
-        secure: false,
-        sameSite: "Lax",
+      const cookieOptions = {
         httpOnly: true,
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
         path: "/",
-      });
+      };
+
+      if (process.env.NODE_ENV === "production") {
+        cookieOptions.secure = true; 
+        cookieOptions.sameSite = "None"; 
+      } else {
+       
+        cookieOptions.secure = false;  
+        cookieOptions.sameSite = "Lax";
+      }
+
+      res.cookie("access_token", access_token, cookieOptions);
+
       return res.status(200).json({
         message: "Signin successful",
         debug: {
           cookieSet: true,
+          environment: process.env.NODE_ENV
         },
       });
     } else {

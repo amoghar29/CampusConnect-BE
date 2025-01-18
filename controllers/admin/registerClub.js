@@ -10,9 +10,9 @@ async function registerClub(req, res) {
       foundedYear,
       president,
       vicePresident,
-      email,
       phoneNumber,
       socialMedia,
+      email,
       membershipFee,
       achievements,
     } = req.body;
@@ -46,7 +46,7 @@ async function registerClub(req, res) {
       foundedYear,
       president,
       vicePresident,
-      email: req.adminEmail,
+      email,
       phoneNumber,
       socialMedia:
         typeof socialMedia === "string"
@@ -62,11 +62,10 @@ async function registerClub(req, res) {
       createdBy: req.adminId,
     });
 
-    // Update admin's clubName
     await Admin.findByIdAndUpdate(req.adminId, {
       clubName,
       updatedAt: new Date(),
-      clubId : newClub._id
+      clubId: newClub._id,
     });
 
     return res.status(201).json({
