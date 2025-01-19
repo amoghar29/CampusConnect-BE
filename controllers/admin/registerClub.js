@@ -15,6 +15,7 @@ async function registerClub(req, res) {
       email,
       membershipFee,
       achievements,
+      clubRegistrationLink,
     } = req.body;
     console.log(req.body);
 
@@ -39,6 +40,20 @@ async function registerClub(req, res) {
       });
     }
 
+    let cleanedAchievements = [];
+    if (achievements) {
+      try {
+        const achievementsArray = typeof achievements === 'string' 
+          ? JSON.parse(achievements) 
+          : achievements;
+        
+        cleanedAchievements = achievementsArray.slice(0, 3);
+      } catch (error) {
+        console.error("Error processing achievements:", error);
+        cleanedAchievements = [];
+      }
+    }
+
     const newClub = await Club.create({
       clubName,
       aboutUs,
@@ -46,6 +61,7 @@ async function registerClub(req, res) {
       foundedYear,
       president,
       vicePresident,
+      clubRegistrationLink,
       email,
       phoneNumber,
       socialMedia:
@@ -57,7 +73,7 @@ async function registerClub(req, res) {
               linkedin: socialMedia?.linkedin || "",
             },
       membershipFee,
-      achievements: achievements || [],
+      achievements: cleanedAchievements,
       totalMembers: 0,
       createdBy: req.adminId,
     });

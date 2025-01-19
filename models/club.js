@@ -19,11 +19,11 @@ const ClubSchema = new Schema({
     twitter: { type: String },
     instagram: { type: String },
   },
-
+  clubRegistrationLink: { type: String },
   membershipFee: { type: Number },
   totalMembers: { type: Number, default: 0 },
 
-  achievements: [{ type: String }],
+  achievements: { type: [String], default: [] },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
