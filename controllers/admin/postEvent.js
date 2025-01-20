@@ -1,20 +1,12 @@
 const Event = require("../../models/event");
-const { uploadToS3 } = require("../../aws/images");
+
 async function postEvent(req, res) {
   const eventDetails = req.body;
-
   try {
     if (!eventDetails.title || !eventDetails.location) {
       return res.status(400).json({
         message: "Missing required fields",
-        required: ["title", , "date", "location"],
-      });
-    }
-    const result = await uploadToS3(req.file, req.clubName);
-
-    if (!result) {
-      return res.status(500).json({
-        message: "Error uploading image to S3",
+        required: ["title", "date", "location"],
       });
     }
 
@@ -24,14 +16,26 @@ async function postEvent(req, res) {
       });
     }
 
-    eventDetails.hostingClub = req.clubId;
-   
+    if (!req.file) {
+      return res.status(400).json({
+        message: "Event banner is required",
+        error: "No file uploaded",
+      });
+    }
+
+    if (!req.file.path) {
+      return res.status(400).json({
+        message: "File upload failed",
+        error: "No file path received from storage",
+      });
+    }
 
     const newEvent = await Event.create({
       ...eventDetails,
       createdBy: req.adminId,
-      hostingClubName : req.clubName,
-      banner: result, // Will be updated after S3 upload
+      hostingClub: req.clubId,
+      hostingClubName: req.clubName,
+      banner: req.file.path,
     });
 
     res.status(201).json({
@@ -40,6 +44,7 @@ async function postEvent(req, res) {
       eventId: newEvent._id,
     });
   } catch (error) {
+
     res.status(500).json({
       message: "Error creating event",
       error: error.message,

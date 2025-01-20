@@ -1,6 +1,5 @@
 const Club = require("../../models/club");
 const Admin = require("../../models/admin");
-const { uploadToS3 } = require("../../aws/images");
 
 async function registerClub(req, res) {
   try {
@@ -17,7 +16,6 @@ async function registerClub(req, res) {
       achievements,
       clubRegistrationLink,
     } = req.body;
-    console.log(req.body);
 
     if (!clubName || !aboutUs) {
       return res.status(400).json({
@@ -33,13 +31,6 @@ async function registerClub(req, res) {
       });
     }
 
-    const logoUrl = await uploadToS3(req.file, clubName);
-    if (!logoUrl) {
-      return res.status(500).json({
-        error: "Error uploading logo",
-      });
-    }
-
     let cleanedAchievements = [];
     if (achievements) {
       try {
@@ -49,7 +40,6 @@ async function registerClub(req, res) {
         
         cleanedAchievements = achievementsArray.slice(0, 3);
       } catch (error) {
-        console.error("Error processing achievements:", error);
         cleanedAchievements = [];
       }
     }
@@ -57,7 +47,7 @@ async function registerClub(req, res) {
     const newClub = await Club.create({
       clubName,
       aboutUs,
-      logo: logoUrl,
+      logo: req.file.path,
       foundedYear,
       president,
       vicePresident,
@@ -89,7 +79,6 @@ async function registerClub(req, res) {
       club: newClub,
     });
   } catch (error) {
-    console.error("Error in registerClub:", error);
     return res.status(500).json({
       error: "An error occurred while registering the club",
     });
