@@ -17,5 +17,8 @@ router.use("/auth", authRouter);
 router.use("/events", eventRouter);
 router.use("/clubs", clubRouter);
 router.use("/winners", winnerRouter);
+router.use("/", (req, res) => {
+  res.send("Welcome to Campus Connect");
+}); // for keeping the server alive using bot 
 
 module.exports = router;
