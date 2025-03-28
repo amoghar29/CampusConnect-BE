@@ -8,9 +8,11 @@ const clubRouter = require("./club");
 const winnerRouter = require("./winner");
 const adminRouter = require("./admin");
 const adminAuth = require("../middleware/adminAuth");
+const queryRouter = require("../controllers/chatbot/sendQuery")
 const router = express.Router();
 
 router.use("/admin", adminAuth, adminRouter);
+router.use("/chatbot",queryRouter)
 router.use("/feedbacks", feedbackRouter);
 router.use("/suggestions", suggestionRouter);
 router.use("/auth", authRouter);

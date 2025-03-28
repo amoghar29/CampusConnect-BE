@@ -1,19 +1,19 @@
-const { uploadToS3 } = require("../../aws/images");
 const Club = require("../../models/club");
 
 async function updateClubInfoById(req, res) {
-  const clubId  = req.clubId;
+  const clubId = req.clubId;
   const updateInfo = req.body;
 
-  if ( req.file){
-    const logoUrl = uploadToS3(updateInfo.logo,req.clubName);
-    updateInfo.logo = logoUrl;
+  // If a new file is uploaded, the imgUpload middleware will have already processed it
+  // and added the Cloudinary URL to req.file.path
+  if (req.file) {
+    updateInfo.logo = req.file.path;
   }
- 
+
   try {
     const updatedClub = await Club.findByIdAndUpdate(clubId, updateInfo, {
       new: true,
-      runValidators: true, 
+      runValidators: true,
     });
 
     if (!updatedClub) {
@@ -22,7 +22,6 @@ async function updateClubInfoById(req, res) {
     console.log("Update Request Info:", clubId, updateInfo);
     console.log("Updated Club Document:", updatedClub);
 
-   
     res.status(200).json({
       message: "Successfully updated",
       updatedClub,
