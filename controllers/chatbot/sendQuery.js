@@ -2,12 +2,12 @@ const sendEmail = require("../../email/emailService.js");
 const Club = require("../../models/club.js");
 
 module.exports = async function sendQuery(req, res) {
-  const { clubName, event, name, userEmail, userPhoneNumber, query } = req.body;
-  console.log(clubName);
+  const { clubId, event, name, userEmail, userPhoneNumber, query } = req.body;
 
-  const club = await Club.findOne({ clubName: clubName }).projection({
-    email: 1,
-  });
+  // to do , why is projection not working? 
+  // try to extract only email and not entire club details
+  const club = await Club.findById({_id :clubId})
+  
 
   if (!club) {
     return res
