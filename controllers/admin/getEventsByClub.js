@@ -4,6 +4,10 @@ async function getEventsByClubId(req, res) {
   const  clubId  = req.clubId;
 
   try {
+    if (!clubId) {
+      return res.status(200).json([]);
+    }
+
     const events = await Event.find({ hostingClub: clubId });
 
     if (events.length === 0) {
@@ -14,6 +18,7 @@ async function getEventsByClubId(req, res) {
 
     res.status(200).json(events);
   } catch (e) {
+    console.error("Error in getEventsByClubId:", e);
     res
       .status(500)
       .json({ message: "Error fetching events", error: e.message });

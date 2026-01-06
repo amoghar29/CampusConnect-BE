@@ -3,6 +3,9 @@ const Feedback = require("../../models/feedback");
 async function getFeedbackByClub(req, res) {
   const clubId = req.clubId
   try {
+    if (!clubId) {
+      return res.status(200).json([]);
+    }
     const feedbacks = await Feedback.find({ hostingClub: clubId });
 
     res.status(200).json(feedbacks);

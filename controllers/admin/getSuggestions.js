@@ -1,12 +1,10 @@
 const Suggestion = require("../../models/suggestion");
 
 async function getSuggestionByClub(req, res) {
-  console.log(req.body);
-  
   const  clubId  = req.clubId;
   try {
     if (!clubId) {
-      return res.status(400).json({ message: "Club name is required" });
+      return res.status(200).json([]);
     }
     const suggestion = await Suggestion.find({ clubId: clubId });
 

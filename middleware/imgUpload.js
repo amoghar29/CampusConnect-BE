@@ -7,7 +7,16 @@ const createStorage = (imageType) => {
   return new CloudinaryStorage({
     cloudinary,
     params: {
-      folder: (req) => `images/${req.clubName}/${imageType}`,
+      folder: (req) => {
+        const clubName = req.clubName || 'unknown-club';
+        if (typeof clubName !== 'string') {
+          console.error("Invalid clubName in upload:", clubName);
+          return `images/unknown-club/${imageType}`;
+        }
+        // Trim whitespace and replace spaces with underscores for valid folder names
+        const sanitizedClubName = clubName.trim().replace(/\s+/g, '_');
+        return `images/${sanitizedClubName}/${imageType}`;
+      },
       allowed_formats: ["jpg", "png", "jpeg"],
     },
   });
@@ -79,11 +88,21 @@ try {
         try {
           const uploadToCloudinary = async (file, folder) => {
             if (!file) return null;
-            
+
+            const clubName = req.clubName || 'unknown-club';
+            if (typeof clubName !== 'string') {
+              console.error("Invalid clubName in upload:", clubName);
+            }
+
+            // Trim whitespace and replace spaces with underscores for valid folder names
+            const sanitizedClubName = typeof clubName === 'string'
+              ? clubName.trim().replace(/\s+/g, '_')
+              : 'unknown-club';
+
             return new Promise((resolve, reject) => {
               const uploadStream = cloudinary.uploader.upload_stream(
                 {
-                  folder: `images/${req.clubName}/${folder}`
+                  folder: `images/${sanitizedClubName}/${folder}`
                 },
                 (error, result) => {
                   if (error) reject(error);
@@ -119,9 +138,33 @@ try {
   };
 
   module.exports = {
-    uploadLogo: (fieldName) => logoUpload.single(fieldName),
-    uploadBanner: (fieldName) => bannerUpload.single(fieldName),
-    uploadEventImage: (fieldName) => eventImageUpload.single(fieldName),
+    uploadLogo: (fieldName) => (req, res, next) => {
+      logoUpload.single(fieldName)(req, res, (err) => {
+        if (err) {
+          console.error("Logo upload error:", err);
+          return res.status(500).json({ message: "Logo upload failed", error: err.message });
+        }
+        next();
+      });
+    },
+    uploadBanner: (fieldName) => (req, res, next) => {
+      bannerUpload.single(fieldName)(req, res, (err) => {
+        if (err) {
+          console.error("Banner upload error:", err);
+          return res.status(500).json({ message: "Banner upload failed", error: err.message });
+        }
+        next();
+      });
+    },
+    uploadEventImage: (fieldName) => (req, res, next) => {
+      eventImageUpload.single(fieldName)(req, res, (err) => {
+        if (err) {
+          console.error("Event image upload error:", err);
+          return res.status(500).json({ message: "Event image upload failed", error: err.message });
+        }
+        next();
+      });
+    },
     uploadMultiple: handleMultipleUploads
   };
 } catch (error) {

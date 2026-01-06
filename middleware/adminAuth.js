@@ -36,6 +36,8 @@ const adminAuth = async (req, res, next) => {
     req.clubId = admin.clubId;
     req.adminEmail = admin.email;
     req.clubName = admin.clubName;
+
+    console.log("adminAuth set - clubId:", admin.clubId, "clubName:", admin.clubName, "type:", typeof admin.clubName);
     next();
   } catch (error) {
     console.error("Auth error:", error);
